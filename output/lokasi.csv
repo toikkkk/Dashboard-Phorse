@@ -1,0 +1,27 @@
+﻿lokasi_id,nama_resmi,nama_singkat,tipe,provinsi,alias_excel,grade_2024,ada_data_2024_2021,ada_data_2025,ada_data_2026,ada_data_listrik_lokasi
+it-surabaya,PT Pertamina Patra Niaga - IT Surabaya,IT Surabaya,Integrated Terminal,Jawa Timur,IT Surabaya,A,1,1,1,1
+it-tanjung-wangi,PT Pertamina Patra Niaga - IT Tanjung Wangi,IT Tanjung Wangi,Integrated Terminal,Jawa Timur,IT Tanjung Wangi,D,1,1,1,1
+it-manggis,PT Pertamina Patra Niaga - IT Manggis,IT Manggis,Integrated Terminal,Bali,IT Manggis,B,1,1,1,1
+it-ampenan,PT Pertamina Patra Niaga - IT Ampenan,IT Ampenan,Integrated Terminal,Nusa Tenggara Barat,IT Ampenan,D,1,1,1,1
+it-bima,PT Pertamina Patra Niaga - IT Bima,IT Bima,Integrated Terminal,Nusa Tenggara Barat,IT Bima,F,1,1,1,1
+ft-tuban,PT Pertamina Patra Niaga - FT Tuban,FT Tuban,Fuel Terminal,Jawa Timur,FT Tuban,B,1,1,1,1
+ft-madiun,PT Pertamina Patra Niaga - FT Madiun,FT Madiun,Fuel Terminal,Jawa Timur,FT Madiun,E,1,1,1,1
+ft-malang,PT Pertamina Patra Niaga - FT Malang,FT Malang,Fuel Terminal,Jawa Timur,FT Malang,E,1,1,1,1
+ft-camplong,PT Pertamina Patra Niaga - FT Camplong,FT Camplong,Fuel Terminal,Jawa Timur,FT Camplong,F,1,1,1,1
+ft-sanggaran,PT Pertamina Patra Niaga - FT Sanggaran,FT Sanggaran,Fuel Terminal,Bali,FT Sanggaran,E,1,1,1,1
+ft-badas,PT Pertamina Patra Niaga - FT Badas,FT Badas,Fuel Terminal,Nusa Tenggara Barat,FT Badas,F,1,1,1,1
+ft-tenau,PT Pertamina Patra Niaga - FT Tenau,FT Tenau,Fuel Terminal,Nusa Tenggara Timur,IT Tenau; FT Tenau,D,1,1,1,1
+ft-maumere,PT Pertamina Patra Niaga - FT Maumere,FT Maumere,Fuel Terminal,Nusa Tenggara Timur,FT Maumere,E,1,1,1,1
+ft-atapupu,PT Pertamina Patra Niaga - FT Atapupu,FT Atapupu,Fuel Terminal,Nusa Tenggara Timur,FT Atapupu,F,1,1,1,1
+ft-ende,PT Pertamina Patra Niaga - FT Ende,FT Ende,Fuel Terminal,Nusa Tenggara Timur,FT Ende,F,1,1,1,1
+ft-kalabahi,PT Pertamina Patra Niaga - FT Kalabahi,FT Kalabahi,Fuel Terminal,Nusa Tenggara Timur,FT Kalabahi,F,1,1,1,1
+ft-reo,PT Pertamina Patra Niaga - FT Reo,FT Reo,Fuel Terminal,Nusa Tenggara Timur,FT Reo,F,1,1,1,1
+ft-waingapu,PT Pertamina Patra Niaga - FT Waingapu,FT Waingapu,Fuel Terminal,Nusa Tenggara Timur,FT Waingapu,F,1,1,1,1
+aft-juanda,PT Pertamina Patra Niaga - AFT Juanda,AFT Juanda,Aviation Fuel Terminal,Jawa Timur,AFT Juanda,I,1,1,1,1
+aft-iswahjudi,PT Pertamina Patra Niaga - AFT Iswahjudi,AFT Iswahjudi,Aviation Fuel Terminal,Jawa Timur,AFT Iswahyudi; AFT Iswahjudi,V,1,1,1,1
+aft-ngurah-rai,PT Pertamina Patra Niaga - AFT Ngurah Rai,AFT Ngurah Rai,Aviation Fuel Terminal,Bali,AFT Ngurah Rai,I,1,1,1,1
+aft-bil,PT Pertamina Patra Niaga - AFT BIL,AFT BIL,Aviation Fuel Terminal,Nusa Tenggara Barat,AFT Bandara Internasional Lombok; AFT BIL,V,1,1,1,1
+aft-eltari,PT Pertamina Patra Niaga - AFT Eltari,AFT Eltari,Aviation Fuel Terminal,Nusa Tenggara Timur,AFT El Tari; AFT Eltari,V,1,1,1,1
+bitumen-plant-gresik,PT Pertamina Patra Niaga - Bitumen Plant Gresik,Bitumen Plant Gresik,Bitumen Plant,Jawa Timur,Bitumen Plant Gresik; BPG,,1,1,1,1
+ft-larantuka,PT Pertamina Patra Niaga - FT Larantuka,FT Larantuka,Fuel Terminal,Nusa Tenggara Timur,FT Larantuka,,1,1,1,1
+depot-lpg-tanjung-perak,PT. Pertamina (Persero) - MOR V Depot LPG Tanjung Perak,Depot LPG Tanjung Perak,Depot LPG,Jawa Timur,Depot LPG Tanjung Perak,,0,0,0,0
