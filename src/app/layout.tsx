@@ -12,15 +12,9 @@ export const metadata: Metadata = {
   description: "Monitoring data lingkungan (ESG aspek Enviro) Regional Jatimbalinus.",
 };
 
-// Tema mengikuti pengaturan sistem (tidak ada tombol pilihan). Dijalankan sebelum halaman tampil agar tanpa kedip.
-const SKRIP_TEMA = `try{document.documentElement.dataset.theme=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}catch(e){}`;
-
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="id" className={`${jakarta.variable} h-full antialiased`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: SKRIP_TEMA }} />
-      </head>
+    <html lang="id" className={`${jakarta.variable} h-full antialiased`}>
       <body className="min-h-full font-sans">
         <PenyediaData>
           <div className="mx-auto w-full max-w-[1600px] sm:p-4 lg:p-6">

@@ -69,8 +69,7 @@ Perubahan dibanding periode setara tahun lalu (`src/lib/hitung.ts`, fungsi `band
 
 ## Tampilan
 
-Warna dan bayangan ada di `src/app/globals.css` (token `--accent`, `--canvas`, `--card`, dst.; mode gelap mengikuti pengaturan sistem lewat
-`data-theme="dark"` (tidak ada tombol pilihan tema)). Aksen UI adalah biru; warna grafik memakai palet kategorikal yang sudah divalidasi.
+Warna dan bayangan ada di `src/app/globals.css` (token `--accent`, `--canvas`, `--card`, dst.; tampilan selalu terang, tidak ada mode gelap). Aksen UI adalah biru; warna grafik memakai palet kategorikal yang sudah divalidasi.
 
 ## Prinsip tampilan data
 
