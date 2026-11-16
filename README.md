@@ -3,34 +3,71 @@
 Dashboard monitoring data lingkungan (ESG aspek Enviro / P-HORSE) untuk 26 lokasi Regional Jatimbalinus.
 Next.js 16 + TypeScript + Tailwind + Recharts, siap di-deploy ke Vercel.
 
-## Menjalankan
+## Menjalankan (lokal)
 
 ```bash
 npm install
+npm run db:seed      # isi database lokal (.data/pglite) dari data-seed/seed.json
+npm run db:akun      # buat 1 akun admin + 1 akun per terminal (26); sandi awal → .data/kredensial-awal.csv
 npm run dev          # http://localhost:3000
+npm test             # uji otentikasi dan input
 ```
 
-## Memperbarui data dari Excel
+Tanpa `DATABASE_URL`, aplikasi memakai database lokal PGlite di `.data/pglite` (hanya untuk pengembangan;
+jangan menjalankan `db:seed` saat `npm run dev` hidup). Di produksi `DATABASE_URL` **wajib**; tanpa itu aplikasi
+menolak berjalan, bukan diam-diam memakai database lokal.
+
+## Login, akun terminal, dan input data
+
+- **Satu akun per terminal** (username = id lokasi, mis. `it-surabaya`) + satu akun `admin`. Sandi awal acak dan
+  **wajib diganti** saat masuk pertama (min. 12 karakter, huruf + angka, bukan sandi umum).
+- **Tampilan awal** akun terminal = terminalnya sendiri. Semua akun tetap bebas melihat seluruh dashboard atau terminal lain.
+- **Input Data** (menu hanya untuk akun terminal): isian bulanan sesuai kolom Excel 2026 (311 kolom: operasional,
+  energi, emisi, sampah, air, limbah B3, biaya). Lokasi **selalu diambil dari sesi di server**, tidak pernah dari
+  kiriman browser, jadi akun terminal lain atau admin tidak dapat menulis ke terminal ini. Hanya bulan yang sudah
+  berjalan dan mulai 2026 yang dapat diisi. Kolom kosong = belum ada data (tidak dianggap nol). Nilai yang berbeda
+  ≥10× dari median 12 bulan terakhir meminta konfirmasi dan ditandai "perlu dicek".
+- **Admin** melihat semua dan mengelola akun (atur ulang sandi, nonaktifkan), tetapi tidak mengubah data.
+- Keamanan: sandi di-hash scrypt; token sesi acak dan hanya hash-nya disimpan; cookie `HttpOnly`, `SameSite=Lax`,
+  `Secure` + prefiks `__Host-` di produksi; sesi habis setelah 4 jam menganggur / 24 jam; pembatasan percobaan
+  login (5 per akun, 20 per IP / 15 menit); seluruh perubahan data dan akun tercatat di tabel `riwayat_input` dan `audit`;
+  semua API dan Server Action memeriksa sesi sendiri (tidak mengandalkan `proxy.ts` saja).
+
+## Deploy ke Vercel
+
+1. Vercel → **Storage → Create → Neon (Postgres)**, hubungkan ke proyek ini (mengisi `DATABASE_URL`).
+2. Tarik variabel ke lokal: `vercel env pull .env.local`.
+3. Dari komputer Anda, terhadap database Neon itu: `npm run db:seed` lalu `npm run db:akun`.
+4. Serahkan sandi awal dari `.data/kredensial-awal.csv` ke tiap petugas lewat jalur aman, lalu hapus berkas itu.
+5. Deploy.
+
+Data klien **tidak** ada di repositori: `Data/`, `output/`, `data-seed/`, dan `.data/` diabaikan git.
+
+## Memperbarui data dari Excel (impor ulang)
 
 ```bash
 pip install -r requirements.txt
-python -m etl.konversi                 # baca Data/*.xlsx → output/ dan public/data/dashboard.json
+python -m etl.konversi                 # baca Data/*.xlsx → output/ dan data-seed/seed.json
+npm run db:seed -- --reset-data        # timpa data lingkungan di database (akun tidak disentuh)
 ```
 
-Dashboard hanya membaca `public/data/dashboard.json`. Setelah Excel baru dikonversi, commit file itu dan
-deploy ulang; Vercel tidak perlu menjalankan Python. Detail konversi: [etl/README.md](etl/README.md).
+Setelah login diaktifkan, petugas mengisi langsung di dashboard; impor ulang hanya untuk koreksi massal.
+Detail konversi: [etl/README.md](etl/README.md).
 
 ## Struktur
 
 | Lokasi | Isi |
 |---|---|
-| `etl/` | Skrip konversi Excel → data bersih + laporan validasi |
-| `public/data/dashboard.json` | Data yang dipakai dashboard (hasil ETL) |
+| `etl/` | Konversi Excel → data bersih, laporan validasi, dan `data-seed/seed.json` |
+| `db/migrations/` | Skema Postgres (data, akun, sesi, audit) |
+| `src/server/` | Database, otentikasi, sesi, aturan input, pembentuk dataset (hanya berjalan di server) |
+| `src/app/api/` | `/api/data` (dataset), `/api/isian` (formulir), `/api/akun` (admin); semua butuh sesi |
+| `src/app/(auth)/`, `src/app/(app)/` | Halaman masuk/ganti sandi dan halaman dashboard (termasuk Input Data, Kelola Akun) |
+| `src/proxy.ts` | Pengalihan awal ke /login (lapis pertama; otorisasi sebenarnya di tiap handler) |
 | `src/lib/panel.ts` | Definisi isi dashboard: ukuran, seri grafik, tab kategori |
 | `src/lib/hitung.ts` | Fungsi agregasi (per lokasi, per bulan, per tahun) |
 | `src/components/` | Kartu KPI, grafik tren, peringkat lokasi, tabel mutu air |
-| `src/app/` | 9 halaman, urutan menu mengikuti situs referensi |
-| `src/app/globals.css` | Token warna (tampilan sementara; ganti di sini saat desain final ada) |
+| `src/app/globals.css` | Token warna |
 
 ## Halaman
 

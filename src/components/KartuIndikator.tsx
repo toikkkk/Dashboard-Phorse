@@ -4,7 +4,6 @@ import {
   ArrowUpRight, Cloud, Droplets, Flame, FlaskConical, Fuel, Info, Trash2, Wallet, Zap, type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import type { CSSProperties } from "react";
 import { useAngkaBerjalan } from "@/lib/animasi";
 import { useData } from "@/lib/data";
@@ -15,6 +14,7 @@ import { PerluDicek, TanpaData } from "./Kerangka";
 import { LencanaPerubahan, PerubahanIndikator } from "./Perubahan";
 import { Sparkline } from "./Sparkline";
 import { Tip } from "./Tip";
+import { useTransisi } from "./Transisi";
 
 export const IKON_INDIKATOR: Record<string, LucideIcon> = {
   penyaluran: Fuel,
@@ -56,10 +56,10 @@ export function KartuIndikator({ ind, urut }: { ind: Indikator; urut: number }) 
     : perTahun(data, filter.lokasi, ind.ukuran).map((h, i) => ((data.meta.bulanTerakhir[String(data.meta.tahun[i])] ?? 12) < 12 ? null : h.nilai));
   const sorot = bulanan ? (filter.bulan ? filter.bulan - 1 : -1) : data.meta.tahun.indexOf(filter.tahun);
 
-  const router = useRouter();
+  const { pindah } = useTransisi();
   const telusuri = () => {
     pilihIndikator(ind.id);
-    router.push("/esg");
+    pindah("/esg");
   };
 
   return (
@@ -93,7 +93,11 @@ export function KartuIndikator({ ind, urut }: { ind: Indikator; urut: number }) 
         <h3 className="text-sm font-semibold text-ink-2">
           <Link
             href="/esg"
-            onClick={() => pilihIndikator(ind.id)}
+            onClick={(e) => {
+              if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+              e.preventDefault();
+              telusuri();
+            }}
             className="fokus-cincin inline-flex items-center gap-1 transition-colors group-hover:text-accent"
           >
             {ind.label}

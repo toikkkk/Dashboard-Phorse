@@ -20,7 +20,7 @@ from pathlib import Path
 import openpyxl
 from openpyxl.utils import get_column_letter as huruf
 
-from . import ekspor_web, validasi
+from . import ekspor_db, validasi
 from .lokasi import LOKASI, cari_lokasi
 from .normalisasi import (BUKAN_DATA, KATEGORI, bersihkan, normalisasi_header, parse_bulan, parse_nilai,
                           rapikan_operasional)
@@ -422,9 +422,9 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("excel", nargs="?", help="path file .xlsx (default: file .xlsx pertama di folder Data/)")
     ap.add_argument("--out", default=str(ROOT / "output"), help="folder output (default: output/)")
-    ap.add_argument("--web", default=str(ROOT / "public" / "data" / "dashboard.json"),
-                    help="file JSON untuk dashboard (default: public/data/dashboard.json)")
-    ap.add_argument("--tanpa-web", action="store_true", help="jangan perbarui data dashboard")
+    ap.add_argument("--seed", default=str(ROOT / "data-seed" / "seed.json"),
+                    help="file seed database (default: data-seed/seed.json; jangan di-commit)")
+    ap.add_argument("--tanpa-seed", action="store_true", help="jangan perbarui file seed database")
     args = ap.parse_args(argv)
     if hasattr(sys.stdout, "reconfigure"):  # konsol Windows default cp1252
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -459,9 +459,9 @@ def main(argv=None):
 
     tulis_output(hasil, out)
     validasi.jalankan(hasil, out)
-    if not args.tanpa_web:
-        n_web, ukuran = ekspor_web.ekspor(hasil, Path(args.web))
-        print(f"  data dashboard: {n_web:,} nilai, {ukuran / 1024:.0f} KB -> {args.web}")
+    if not args.tanpa_seed:
+        n_f, n_m, n_t, ukuran = ekspor_db.ekspor(hasil, Path(args.seed))
+        print(f"  seed database: {n_f:,} nilai, {n_m} metrik, {n_t} periode terisi, {ukuran / 1024:.0f} KB -> {args.seed}")
 
     n = defaultdict(int)
     for t in hasil.temuan:

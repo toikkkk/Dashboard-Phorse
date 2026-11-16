@@ -297,7 +297,7 @@ export function PanelGrafik({
         <Tabel baris={baris} seri={seri} satuan={satuan} laluLabel={laluLabel} />
       ) : (
         <div className="h-64 w-full cursor-pointer" aria-label={`Grafik ${panel.judul}. Klik kolom untuk memfokuskan.`}>
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" debounce={150}>
             {panel.jenis === "tumpuk" ? (
               <ComposedChart data={baris} margin={margin} onClick={(st) => klikKolom(st.activeTooltipIndex)}>
                 {grid}

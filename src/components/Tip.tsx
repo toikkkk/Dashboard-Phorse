@@ -11,12 +11,14 @@ type Sisi = "bawah" | "atas" | "kanan" | "kiri-bawah";
 export function Tip({
   teks, sisi = "bawah", children, className = "",
 }: {
-  teks: ReactNode;
+  /** Kosong = tanpa tooltip. */
+  teks?: ReactNode;
   sisi?: Sisi;
   children: ReactElement<{ "aria-describedby"?: string }>;
   className?: string;
 }) {
   const id = useId();
+  if (!teks) return <span className={className}>{children}</span>;
   return (
     <span className={`tip-wrap ${className}`}>
       {cloneElement(children, { "aria-describedby": id })}

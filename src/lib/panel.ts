@@ -103,7 +103,7 @@ const GRUP_BBM: [string, string][] = [
   ["Lube base, bitumen, dll.", "Lube Base/Aditif/Bitumen/FAME/Ethanol"],
 ];
 
-const PANEL = {
+export const PANEL = {
   penyaluranProduk: {
     id: "penyaluran-produk",
     judul: "Penyaluran BBM per kelompok produk",
@@ -323,3 +323,32 @@ export const MUTU_OIL_CATCHER = mutu("Oil Catcher", [["TOC", "TOC"], ["Minyak & 
 export const MUTU_IPAL = mutu("IPAL Domestik", [
   ["COD", "COD"], ["BOD", "BOD"], ["TSS", "TSS"], ["Amonia total", "Amonia Total"], ["Minyak & lemak", "Minyak & Lemak"],
 ]);
+
+// ------------------------------------------------------------------ kolom isian formulir
+
+/** Semua ukuran yang dipakai dashboard (indikator, seri grafik, dan parameter mutu air). */
+function semuaUkuran(): { pilih: Pilih; satuan: string }[] {
+  const daftar: { pilih: Pilih; satuan: string }[] = [];
+  for (const ind of INDIKATOR) {
+    daftar.push(ind.ukuran);
+    for (const t of ind.tampilan) {
+      if (Array.isArray(t.panel.seri)) for (const s of t.panel.seri) daftar.push(s.ukuran);
+      else daftar.push({ pilih: t.panel.seri.dasar, satuan: t.panel.satuan });
+    }
+  }
+  for (const p of [...MUTU_OIL_CATCHER, ...MUTU_IPAL]) daftar.push(p.ukuran);
+  return daftar;
+}
+
+let tembolokUkuran: { pilih: Pilih; satuan: string }[] | null = null;
+
+/**
+ * Apakah metrik ini dipakai dashboard? Dipakai untuk menentukan kolom Excel mana yang menjadi isian formulir:
+ * hanya kolom yang ada di Excel dan sekaligus ditampilkan di dashboard.
+ * `u` = satuan bawaan metrik.
+ */
+export function metrikDipakai(m: { k: string; s: string[]; u: string }): boolean {
+  tembolokUkuran ??= semuaUkuran();
+  const metrik = m as Metrik;
+  return tembolokUkuran.some((u) => u.pilih(metrik) && (u.satuan === "*" || u.satuan === m.u));
+}

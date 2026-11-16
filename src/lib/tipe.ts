@@ -1,4 +1,4 @@
-// Bentuk data public/data/dashboard.json (dihasilkan oleh etl/ekspor_web.py).
+// Bentuk dataset yang dikirim /api/data (dibangun dari database oleh src/server/dataset.ts).
 
 export type Lokasi = {
   id: string;
