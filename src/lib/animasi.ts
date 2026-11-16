@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { sedangTransisi } from "./transisiStatus";
 
 const QUERY = "(prefers-reduced-motion: reduce)";
 
@@ -26,6 +27,12 @@ export function useAngkaBerjalan(target: number, ms = 800): number {
   const dari = useRef(0);
 
   useEffect(() => {
+    // Saat halaman sedang digeser masuk (View Transition), angka langsung tampil utuh.
+    if (sedangTransisi()) {
+      dari.current = target;
+      const r = requestAnimationFrame(() => setNilai(target));
+      return () => cancelAnimationFrame(r);
+    }
     const mulai = performance.now();
     const awal = dari.current;
     let raf = 0;

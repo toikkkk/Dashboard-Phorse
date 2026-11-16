@@ -40,7 +40,7 @@ function useHitungan(ind: Indikator) {
 }
 
 /** Kartu ringkasan satu indikator di Beranda: angka, perubahan vs periode setara, mini-tren, cakupan data. */
-export function KartuIndikator({ ind, urut }: { ind: Indikator; urut: number }) {
+export function KartuIndikator({ ind, urut, padat = false }: { ind: Indikator; urut: number; padat?: boolean }) {
   const { data, filter, pilihIndikator } = useData();
   const { melapor, dari, hasil, ban } = useHitungan(ind);
   const berjalan = useAngkaBerjalan(melapor === 0 ? 0 : hasil.nilai);
@@ -61,6 +61,85 @@ export function KartuIndikator({ ind, urut }: { ind: Indikator; urut: number }) 
     pilihIndikator(ind.id);
     pindah("/esg");
   };
+
+  // Keterangan sparkline (ditampilkan lewat AreaTip di induknya): puncak, titik terendah, dan nilai terakhir.
+  const labelKolom = bulanan ? BULAN : data.meta.tahun.map(String);
+  const titik = deret.flatMap((v, i) => (v == null ? [] : [{ v, i }]));
+  const tinggiTitik = titik.length ? titik.reduce((a, b) => (b.v > a.v ? b : a)) : null;
+  const rendahTitik = titik.length ? titik.reduce((a, b) => (b.v < a.v ? b : a)) : null;
+  const akhirTitik = titik.length ? titik[titik.length - 1] : null;
+  const tipTren =
+    titik.length < 2 || !tinggiTitik || !rendahTitik || !akhirTitik
+      ? `${ind.label}: terlalu sedikit titik untuk tren`
+      : [
+          `Tren ${ind.label} ${bulanan ? `per bulan ${filter.tahun}` : "per tahun"}`,
+          `Puncak: ${labelKolom[tinggiTitik.i]} (${angka(tinggiTitik.v)} ${satuan})`,
+          `Terendah: ${labelKolom[rendahTitik.i]} (${angka(rendahTitik.v)} ${satuan})`,
+          `Terakhir: ${labelKolom[akhirTitik.i]} (${angka(akhirTitik.v)} ${satuan})`,
+        ].join("\n");
+
+  if (padat) {
+    return (
+      <article
+        style={{ "--i": urut } as CSSProperties}
+        onClick={(e) => {
+          if (!(e.target as HTMLElement).closest("a,button")) telusuri();
+        }}
+        className="kartu kartu-naik masuk group relative flex cursor-pointer flex-col gap-1.5 p-3.5"
+      >
+        <div className="flex items-center gap-2.5">
+          <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110">
+            <Ikon className="size-[18px]" />
+          </span>
+          <h3 className="min-w-0 flex-1 truncate text-sm font-semibold text-ink-2" title={ind.konteks ? `${ind.label} (konteks aktivitas)` : ind.label}>
+            <Link
+              href="/esg"
+              onClick={(e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                e.preventDefault();
+                telusuri();
+              }}
+              className="fokus-cincin transition-colors group-hover:text-accent"
+            >
+              {ind.label}
+            </Link>
+          </h3>
+          <Tip teks={ind.definisi} sisi="kiri-bawah">
+            <button
+              type="button"
+              aria-label={`Arti ${ind.label}`}
+              className="fokus-cincin relative z-10 flex size-7 items-center justify-center rounded-full text-muted transition-colors hover:bg-accent-soft hover:text-accent"
+            >
+              <Info className="size-4" aria-hidden />
+            </button>
+          </Tip>
+        </div>
+        {kosong ? (
+          <div>
+            <p className="text-2xl font-extrabold leading-none text-muted">—</p>
+            <TanpaData kategori={ind.kategori} kelas="mt-1" />
+          </div>
+        ) : (
+          <>
+            <Tip teks={`${angka(hasil.nilai)} ${satuan}${bulanan && !filter.bulan && akhir < 12 ? ` · baru terisi sampai ${BULAN[akhir - 1]}` : ""} · ${filter.lokasi !== null ? "lokasi ini" : `${melapor} dari ${dari} lokasi mengisi`}`} sisi="atas" className="w-full">
+              <p tabIndex={0} className="fokus-cincin truncate text-2xl font-extrabold leading-none tracking-tight text-ink">
+                {ringkas(berjalan)} <span className="text-xs font-semibold text-ink-2">{satuan}</span>
+              </p>
+            </Tip>
+            <div className="flex items-end justify-between gap-2">
+              <PerubahanIndikator ban={ban} arah={ind.arah} satuan={ind.ukuran.satuan} ringkas />
+              <span data-tip={tipTren} tabIndex={0} className="fokus-cincin rounded">
+                <Sparkline
+                  nilai={deret} sorot={sorot} lebar={96} tinggi={28}
+                  label={`Tren ${ind.label} ${bulanan ? `per bulan ${filter.tahun}` : "per tahun"}`}
+                />
+              </span>
+            </div>
+          </>
+        )}
+      </article>
+    );
+  }
 
   return (
     <article

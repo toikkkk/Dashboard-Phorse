@@ -271,7 +271,7 @@ body {
 
 /* Perpindahan antar bagian: halaman berikutnya naik menumpuk di atas halaman lama (View Transitions API).
    Dikomposit oleh browser dari tangkapan gambar, jadi tetap mulus walau halaman berat. */
-html[data-vt="halaman"] .area-isi {
+html[data-vt="halaman"] .konten {
   view-transition-name: isi;
 }
 html[data-vt="sisi"] .konten {
@@ -281,6 +281,11 @@ html[data-vt="sisi"] .konten {
   animation: none;
 }
 /* Melebar/menyempitnya menu samping: kolom isi bergeser sebagai satu gambar (compositor), bukan ditata ulang tiap bingkai. */
+/* Memperbesar/mengecilkan sebuah visual: kartu bernama (data-vtn) berpindah dan berubah ukuran sebagai gambar. */
+html[data-vt="perbesar"]::view-transition-group(*) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
 html[data-vt="sisi"]::view-transition-group(konten) {
   animation-duration: 0.5s;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
@@ -297,7 +302,7 @@ html[data-vt="sisi"]::view-transition-group(konten) {
 }
 ::view-transition-new(isi) {
   animation-name: isi-baru;
-  border-radius: 2rem 2rem 0 0;
+  border-radius: 2rem 0 0 0;
   box-shadow: 0 -24px 60px -16px rgba(15, 50, 110, 0.3);
 }
 ::view-transition-old(root) {
@@ -307,11 +312,6 @@ html[data-vt="sisi"]::view-transition-group(konten) {
   animation: none;
   mix-blend-mode: normal;
 }
-/* Halaman baru tiba sudah utuh: animasi masuk per-kartu ditahan selama perpindahan. */
-html[data-vt="halaman"] .masuk,
-html[data-vt="halaman"] .baris-masuk {
-  animation: none !important;
-}
 @keyframes isi-lama {
   to {
     transform: scale(0.95) translateY(-16px);
@@ -320,7 +320,7 @@ html[data-vt="halaman"] .baris-masuk {
 }
 @keyframes isi-baru {
   from {
-    transform: translateY(70vh);
+    transform: translateY(100%);
   }
 }
 @media (prefers-reduced-motion: reduce) {

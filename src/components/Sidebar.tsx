@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  BadgeCheck, ChevronsLeft, Droplet, FileCheck2, FlaskConical, Leaf, LayoutDashboard, LogOut, PencilLine, Siren,
-  TriangleAlert, Users, Waves, type LucideIcon,
+  ChevronsLeft, Droplet, Leaf, LayoutDashboard, LogOut, PencilLine,
+  Users, Waves, type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,13 +19,8 @@ const IKON: Record<string, LucideIcon> = {
   "/": LayoutDashboard,
   "/esg": Leaf,
   "/input": PencilLine,
-  "/pelaporan-simpel": FileCheck2,
-  "/risiko-bencana": TriangleAlert,
-  "/kompatibilitas-b3": FlaskConical,
-  "/perizinan-lingkungan": BadgeCheck,
   "/oil-catcher": Droplet,
   "/ipal-domestik": Waves,
-  "/kedaruratan-b3": Siren,
   "/akun": Users,
 };
 
@@ -142,7 +137,7 @@ export function Sidebar() {
                 <Tip
                   key={m.href}
                   sisi="kanan"
-                  teks={kecil ? (m.tersedia ? m.label : `${m.label} · belum ada data`) : null}
+                  teks={kecil ? m.label : null}
                   className="masuk block shrink-0 lg:w-full"
                 >
                   <Link
@@ -162,14 +157,6 @@ export function Sidebar() {
                       <Ikon className="size-5 transition-transform duration-200 group-hover:scale-110" strokeWidth={2} />
                     </span>
                     <span className={`hidden lg:block ${label(!kecil)}`}>{m.label}</span>
-                    {!m.tersedia && (
-                      <span
-                        aria-label="belum ada data"
-                        className={`absolute size-2 rounded-full transition-all duration-500 ${
-                          kecil ? "right-1.5 top-1.5 bg-[var(--netral)] max-lg:bg-white/60" : "right-1.5 top-1.5 bg-white/60 lg:right-5 lg:top-[17px]"
-                        } ${aktif && !kecil ? "lg:bg-[var(--netral)]" : ""}`}
-                      />
-                    )}
                   </Link>
                 </Tip>
               );

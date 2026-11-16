@@ -10,12 +10,15 @@ import { Tip } from "./Tip";
 
 /** Kartu dasar. `sumber` = kartu ini adalah visual yang baru diklik; `urut` mengatur jeda animasi masuk. */
 export function Kartu({
-  children, className = "", sumber = false, urut = 0, naik = false,
+  children, className = "", sumber = false, urut = 0, naik = false, vtn,
 }: {
   children: ReactNode; className?: string; sumber?: boolean; urut?: number; naik?: boolean;
+  /** Nama unik kartu; dipakai agar perubahan ukuran (perbesar/kecilkan) dianimasikan sebagai satu gambar. */
+  vtn?: string;
 }) {
   return (
     <section
+      data-vtn={vtn}
       style={{ "--i": urut } as CSSProperties}
       className={`kartu masuk p-5 sm:p-6 ${naik ? "kartu-naik" : ""} ${sumber ? "kartu-sumber" : ""} ${className}`}
     >
@@ -124,15 +127,28 @@ function BarisTampil({ indikator }: { indikator?: string }) {
 }
 
 export function Kerangka({
-  judul, deskripsi, filter = true, tampil, children,
+  judul, deskripsi, filter = true, tampil, ringkas = false, children,
 }: {
   judul: ReactNode;
   deskripsi?: string;
   filter?: boolean;
+  /** Kepala satu baris (judul kiri, filter kanan) untuk halaman yang dirancang muat dalam satu layar. */
+  ringkas?: boolean;
   /** Nama indikator yang sedang ditelusuri (halaman Data ESG), ditampilkan di bilah "Sedang menampilkan". */
   tampil?: string;
   children: ReactNode;
 }) {
+  if (ringkas) {
+    return (
+      <div className="flex flex-col gap-3">
+        <div className="masuk relative z-20 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+          <h1 className="text-balance text-2xl font-extrabold leading-tight tracking-tight text-ink sm:text-3xl">{judul}</h1>
+          {filter && <BarisFilter />}
+        </div>
+        {children}
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col gap-6">
       <div className="masuk">

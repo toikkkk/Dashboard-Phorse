@@ -7,6 +7,7 @@ import {
   type BarShapeProps,
 } from "recharts";
 import { useKurangiGerak } from "@/lib/animasi";
+import { useSedangTransisi } from "@/lib/transisiStatus";
 import { useData } from "@/lib/data";
 import { angka, BULAN, ringkas } from "@/lib/format";
 import { bulanTerakhirKategori, kategoriUkuran, lokasiMelaporTahun, perBulan, perTahun, tahunBulanan } from "@/lib/hitung";
@@ -152,6 +153,7 @@ export function PanelGrafik({
 }) {
   const { data, filter, sumber, fokus } = useData();
   const kurangiGerak = useKurangiGerak();
+  const lagiTransisi = useSedangTransisi();
   const [tabel, setTabel] = useState(false);
   const [sorot, setSorot] = useState<string | null>(null);
   const [hover, setHover] = useState<string | null>(null);
@@ -243,7 +245,7 @@ export function PanelGrafik({
     />
   );
   const margin = { top: 8, right: 8, left: 0, bottom: 0 };
-  const animasi = !kurangiGerak;
+  const animasi = !kurangiGerak && !lagiTransisi;
 
   return (
     <Kartu className="flex flex-col gap-4" sumber={sumber === panel.id} urut={urut}>

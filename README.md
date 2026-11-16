@@ -76,7 +76,6 @@ Detail konversi: [etl/README.md](etl/README.md).
 | Beranda | 7 indikator utama: angka, perubahan dibanding periode setara tahun lalu, mini-tren, cakupan data. Klik kartu untuk menelusuri. |
 | Data ESG | Satu alur: pilih indikator → kapan dan dari apa (grafik + garis total tahun lalu) → di mana (peringkat lokasi dengan porsi dan perubahan). |
 | Oil Catcher, IPAL Domestik | Hasil pemantauan per lokasi per bulan (satuan asli: mg/L atau ton). Baku mutu belum ada, jadi status memenuhi/tidak belum ditampilkan. |
-| Pelaporan SIMPEL, Risiko Bencana, Kompatibilitas B3, Perizinan Lingkungan, Kedaruratan B3 | Belum ada data di Excel |
 
 ## Cara perubahan dihitung
 

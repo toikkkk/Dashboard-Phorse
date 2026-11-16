@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import { aturTransisi } from "@/lib/transisiStatus";
 import { createContext, useCallback, useContext, useLayoutEffect, useRef, type ReactNode } from "react";
 
 type Konteks = { pindah: (href: string) => void };
@@ -14,13 +15,14 @@ export type DokumenVT = Document & {
     updateCallbackDone: Promise<unknown>;
   };
 };
-type JenisVT = "halaman" | "sisi";
+type JenisVT = "halaman" | "sisi" | "perbesar";
 
 /** Menjalankan View Transition bernama (gaya animasinya dipilih lewat atribut data-vt di <html>). */
-export function jalankanVT(jenis: JenisVT, ubah: () => void | Promise<void>): boolean {
+export function jalankanVT(jenis: JenisVT, ubah: () => void | Promise<void>, sesudah?: () => void): boolean {
   const dok = document as DokumenVT;
   if (!dok.startViewTransition || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
   dok.documentElement.dataset.vt = jenis;
+  aturTransisi(true);
   const vt = dok.startViewTransition(ubah);
   // Transisi yang dilewati karena transisi baru dimulai menolak (reject) janjinya; itu wajar, jangan jadi galat.
   const abaikan = () => {};
@@ -28,6 +30,8 @@ export function jalankanVT(jenis: JenisVT, ubah: () => void | Promise<void>): bo
   vt.updateCallbackDone.catch(abaikan);
   vt.finished.catch(abaikan).finally(() => {
     delete dok.documentElement.dataset.vt;
+    aturTransisi(false);
+    sesudah?.();
   });
   return true;
 }
@@ -49,7 +53,12 @@ export function PenyediaTransisi({ children }: { children: ReactNode }) {
   // Halaman baru sudah dirender: izinkan browser memotretnya dan memulai animasi.
   useLayoutEffect(() => {
     if (!selesai.current) return;
-    window.scrollTo({ top: 0 });
+    document.querySelector(".konten")?.scrollTo({ top: 0 });
+    // Animasi masuk per-kartu (CSS) langsung diselesaikan: halaman baru tiba utuh dan tidak ada yang berkedip atau
+    // bergerak sendiri di dalam lapisan yang sedang digeser.
+    for (const a of document.getAnimations()) {
+      if (a instanceof CSSAnimation && ["masuk", "tumbuh", "cincin"].includes(a.animationName)) a.finish();
+    }
     const lepas = selesai.current;
     selesai.current = null;
     // Langsung, tanpa requestAnimationFrame: selama menunggu, browser menahan rAF sehingga akan menunggu tanpa akhir.
@@ -93,7 +102,7 @@ export function PenyediaTransisi({ children }: { children: ReactNode }) {
   return <KonteksTransisi.Provider value={{ pindah }}>{children}</KonteksTransisi.Provider>;
 }
 
-/** Area isi halaman yang ikut dianimasikan saat berpindah bagian. */
+/** Pembungkus isi halaman (di bawah bilah atas). */
 export function AreaIsi({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`area-isi bg-canvas ${className}`}>{children}</div>;
+  return <div className={className}>{children}</div>;
 }

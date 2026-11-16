@@ -24,7 +24,7 @@ export function TombolPerlebar({
         onClick={perlebar.onToggle}
         aria-pressed={perlebar.aktif}
         aria-label={teks}
-        className={`fokus-cincin flex size-9 shrink-0 items-center justify-center rounded-xl transition-all hover:-translate-y-0.5 ${
+        className={`fokus-cincin flex size-8 shrink-0 items-center justify-center rounded-lg transition-all hover:-translate-y-0.5 ${
           perlebar.aktif ? "bg-accent text-on-accent shadow-md" : "bg-accent-soft text-accent hover:bg-accent-kuat"
         }`}
       >

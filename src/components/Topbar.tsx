@@ -22,7 +22,7 @@ export function Topbar() {
   const bukanAwal = filter.bulan > 0 || filter.lokasi !== awal;
 
   return (
-    <header className="flex flex-wrap items-center gap-x-4 gap-y-3 px-4 py-5 sm:px-8">
+    <header className="flex flex-wrap items-center gap-x-4 gap-y-3 px-4 pb-1 pt-4 sm:px-8">
       <div className={`items-center gap-2.5 ${kecil ? "flex" : "flex lg:hidden"}`}>
         <span aria-hidden className="flex size-10 items-center justify-center rounded-2xl bg-accent text-on-accent shadow-md">
           <Leaf className="size-5" />
