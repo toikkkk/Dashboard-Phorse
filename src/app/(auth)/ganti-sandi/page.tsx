@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useActionState, useRef } from "react";
 import { KolomAuth } from "@/components/KolomAuth";
+import { useTransisiMasuk } from "@/lib/transisiMasuk";
 import { gantiSandiAksi, type StatusGanti } from "./aksi";
 
 gsap.registerPlugin(useGSAP);
@@ -12,6 +13,7 @@ gsap.registerPlugin(useGSAP);
 export default function HalamanGantiSandi() {
   const [status, aksi, menunggu] = useActionState<StatusGanti, FormData>(gantiSandiAksi, null);
   const form = useRef<HTMLFormElement>(null);
+  useTransisiMasuk(status?.ok, status?.tujuan, form);
 
   useGSAP(
     () => {

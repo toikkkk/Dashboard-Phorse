@@ -6,7 +6,7 @@ import { ambilIp, ambilPengguna, ambilToken } from "@/server/akses";
 import { ambilDb } from "@/server/db";
 import { gantiSandi } from "@/server/otentikasi";
 
-export type StatusGanti = { galat?: string } | null;
+export type StatusGanti = { galat?: string; ok?: true; tujuan?: string } | null;
 
 const skema = z.object({
   sandiLama: z.string().min(1).max(1024),
@@ -32,5 +32,6 @@ export async function gantiSandiAksi(_sebelumnya: StatusGanti, form: FormData): 
     console.error("ganti sandi gagal karena kesalahan layanan", e);
     return { galat: "Layanan sedang bermasalah. Coba lagi sebentar." };
   }
-  redirect("/");
+  // Klien memainkan transisi GSAP lalu berpindah ke dashboard.
+  return { ok: true, tujuan: "/" };
 }

@@ -330,3 +330,9 @@ html[data-vt="sisi"]::view-transition-group(konten) {
     animation: none !important;
   }
 }
+
+/* Tepat setelah masuk: animasi masuk kartu menunggu sampai penutup biru mulai menyusut. */
+html[data-masuk="tahan"] .masuk,
+html[data-masuk="tahan"] .baris-masuk {
+  animation-play-state: paused !important;
+}

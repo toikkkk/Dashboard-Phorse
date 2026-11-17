@@ -6,7 +6,7 @@ import { ambilIp, ambilUserAgent, keluarkan, setCookieSesi } from "@/server/akse
 import { ambilDb } from "@/server/db";
 import { masuk } from "@/server/otentikasi";
 
-export type StatusLogin = { galat?: string; username?: string } | null;
+export type StatusLogin = { galat?: string; username?: string; ok?: true; tujuan?: string } | null;
 
 const skema = z.object({ username: z.string().min(1).max(100), sandi: z.string().min(1).max(1024) });
 
@@ -36,7 +36,8 @@ export async function masukAksi(_sebelumnya: StatusLogin, form: FormData): Promi
     console.error("login gagal karena kesalahan layanan", e);
     return { galat: "Layanan sedang bermasalah. Coba lagi sebentar.", username };
   }
-  redirect(tujuan);
+  // Tidak redirect dari server: klien memainkan transisi GSAP lalu berpindah halaman sendiri.
+  return { ok: true, tujuan, username };
 }
 
 export async function keluarAksi(): Promise<void> {

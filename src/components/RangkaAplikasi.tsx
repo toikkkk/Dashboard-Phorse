@@ -1,6 +1,7 @@
 "use client";
 
 import { useSisi } from "@/lib/sisi";
+import { AnimasiMasuk } from "./AnimasiMasuk";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { AreaIsi, PenyediaTransisi } from "./Transisi";
@@ -14,6 +15,7 @@ export function RangkaAplikasi({ children }: { children: React.ReactNode }) {
   const { kecil } = useSisi();
   return (
     <PenyediaTransisi>
+      <AnimasiMasuk />
       <div className="h-dvh overflow-hidden bg-canvas">
         <Sidebar />
         <div className={`konten h-dvh overflow-y-auto overflow-x-hidden bg-canvas ${kecil ? "lg:ml-24" : "lg:ml-68"}`}>
