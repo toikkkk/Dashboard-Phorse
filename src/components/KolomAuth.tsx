@@ -36,11 +36,11 @@ export function KolomAuth({
         spellCheck={false}
         required
         placeholder=" "
-        className={`peer fokus-cincin h-14 w-full rounded-2xl border border-line bg-card-2 pl-4 pt-4 text-sm text-ink outline-none transition focus:border-accent focus:bg-card focus:shadow-[0_0_0_4px_var(--accent-soft)] ${sandi ? "pr-12" : "pr-4"}`}
+        className={`peer h-14 w-full rounded-2xl border border-white/20 bg-white/10 pl-4 pt-4 text-sm text-white outline-none transition focus:border-white/70 focus:bg-white/15 focus:shadow-[0_0_0_4px_rgba(255,255,255,0.12)] focus-visible:outline-none autofill:[-webkit-text-fill-color:#fff] autofill:shadow-[inset_0_0_0_1000px_rgba(40,90,170,0.9)] ${sandi ? "pr-12" : "pr-4"}`}
       />
       <label
         htmlFor={id}
-        className="pointer-events-none absolute left-4 top-2 text-[11px] font-semibold text-ink-2 transition-all duration-200 peer-placeholder-shown:top-[1.05rem] peer-placeholder-shown:text-sm peer-placeholder-shown:font-medium peer-placeholder-shown:text-muted peer-focus:top-2 peer-focus:text-[11px] peer-focus:font-semibold peer-focus:text-accent"
+        className="pointer-events-none absolute left-4 top-2 text-[11px] font-semibold text-white/70 transition-all duration-200 peer-placeholder-shown:top-[1.05rem] peer-placeholder-shown:text-sm peer-placeholder-shown:font-medium peer-placeholder-shown:text-white/55 peer-focus:top-2 peer-focus:text-[11px] peer-focus:font-semibold peer-focus:text-white"
       >
         {label}
       </label>
@@ -50,7 +50,7 @@ export function KolomAuth({
           onClick={() => setLihat((v) => !v)}
           aria-label={lihat ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
           aria-pressed={lihat}
-          className="fokus-cincin absolute right-2 top-2.5 flex size-9 items-center justify-center rounded-xl text-ink-2 transition-colors hover:bg-accent-soft hover:text-accent"
+          className="absolute right-2 top-2.5 flex size-9 items-center justify-center rounded-xl text-white/70 outline-none transition-colors hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white/70"
         >
           {lihat ? <EyeOff className="size-[18px]" aria-hidden /> : <Eye className="size-[18px]" aria-hidden />}
         </button>
